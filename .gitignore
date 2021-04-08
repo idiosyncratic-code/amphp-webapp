@@ -1,0 +1,4 @@
+/vendor
+/build
+/tools
+.phpunit.result.cache

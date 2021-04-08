@@ -1,0 +1,65 @@
+{
+  "name": "idiosyncratic/amphp-webapp",
+  "description": "Prototype Amp Web Application",
+  "type": "project",
+  "license": "ISC",
+  "authors": [
+    {
+      "name": "Jason Silkey",
+      "email": "jason@jasonsilkey.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Idiosyncratic\\Amp\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Idiosyncratic\\Amp\\": "tests"
+    }
+  },
+  "extra": {
+    "unused": [
+      "composer/xdebug-handler"
+    ]
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "config": {
+    "preferred-install": "dist",
+    "sort-packages": true,
+    "optimize-autoloader": true,
+    "discard-changes": true
+  },
+  "require": {
+    "php": ">=8.0",
+    "ext-pcntl": "*",
+    "amphp/amp": "^2.5",
+    "amphp/http-server": "^2.1",
+    "amphp/http-server-static-content": "dev-fix-server-observer-typehint",
+    "amphp/log": "^1.1",
+    "amphp/socket": "^1.1",
+    "composer/xdebug-handler": "^1.4",
+    "idiosyncratic/amproute": "^0.1",
+    "php-di/php-di": "^6.3",
+    "psr/log": "^1.1",
+    "symfony/console": "^5.2",
+    "symfony/lock": "^5.2",
+    "twig/twig": "^3.0"
+  },
+  "require-dev": {
+    "bmitch/churn-php": "^1.5",
+    "doctrine/coding-standard": "^8.2",
+    "php-parallel-lint/php-console-highlighter": "^0.5.0",
+    "php-parallel-lint/php-parallel-lint": "^1.2",
+    "phpstan/phpstan": "^0.12.81",
+    "phpunit/phpunit": "^9.5"
+  },
+  "repositories": [
+    {
+        "type": "vcs",
+        "url": "https://github.com/idiosyncratic-code/amphp-http-server-static-content"
+    }
+  ]
+}

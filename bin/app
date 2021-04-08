@@ -1,0 +1,34 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+require sprintf('%s/vendor/autoload.php', dirname(__DIR__));
+
+use Amp\Http\Server\Options;
+use Amp\Http\Server\RequestHandler;
+use Amp\Http\Server\ServerObserver;
+use Composer\XdebugHandler\XdebugHandler;
+use Idiosyncratic\AmpRoute\Router;
+use Idiosyncratic\Amp\Console\Command\Serve;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\Console\Application;
+use Symfony\Component\Lock\LockFactory;
+
+$xdebug = new XdebugHandler('webapp');
+
+$xdebug->check();
+
+$container = require sprintf('%s/bootstrap.php', dirname(__DIR__));
+
+$application = new Application();
+
+$application->add(new Serve(
+    $container->get(Options::class),
+    $container->get(RequestHandler::class),
+    $container->get(LoggerInterface::class),
+    $container->get(LockFactory::class),
+    $container->get(ServerObserver::class),
+));
+
+$application->run();
