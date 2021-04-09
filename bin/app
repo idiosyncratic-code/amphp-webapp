@@ -8,6 +8,8 @@ require sprintf('%s/vendor/autoload.php', dirname(__DIR__));
 use Amp\Http\Server\Options;
 use Amp\Http\Server\RequestHandler;
 use Amp\Http\Server\ServerObserver;
+use Amp\Socket\BindContext;
+use Amp\Socket\Server as SocketServer;
 use Composer\XdebugHandler\XdebugHandler;
 use Idiosyncratic\AmpRoute\Router;
 use Idiosyncratic\Amp\Console\Command\Serve;
@@ -28,6 +30,7 @@ $application->add(new Serve(
     $container->get(RequestHandler::class),
     $container->get(LoggerInterface::class),
     $container->get(LockFactory::class),
+    $container->get(SocketServer::class),
     $container->get(ServerObserver::class),
 ));
 

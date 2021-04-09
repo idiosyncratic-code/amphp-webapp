@@ -4,17 +4,14 @@ declare(strict_types=1);
 
 use Amp\Http\Server\Options as ServerOptions;
 use Amp\Http\Server\StaticContent\DocumentRoot;
+use Amp\Socket\Server as SocketServer;
 use Idiosyncratic\Amp\ServerStatsObserver;
 use Twig\Environment as TwigEnvironment;
 
 return [
-    ServerStatsObserver::class => [
-        'interval' => 5000,
-    ],
-    TwigEnvironment::class => [
-        'cache' => 'var/cache',
-    ],
-    'listen' => [
+    ServerStatsObserver::class => ['interval' => 5000],
+    TwigEnvironment::class => ['cache' => 'var/cache'],
+    SocketServer::class => [
         [
             'address' => '0.0.0.0',
             'port' => '80',
@@ -32,7 +29,7 @@ return [
         'http2Timeout' => 60,
         'tlsSetupTimeout' => 5,
         'concurrentStreamLimit' => 256,
-        'allowedMethods' => ["GET", "POST", "PUT", "PATCH", "HEAD", "OPTIONS", "DELETE"],
+        'allowedMethods' => ['GET', 'POST', 'PUT', 'PATCH', 'HEAD', 'OPTIONS', 'DELETE'],
         'bodySizeLimit' => 131072,
         'headerSizeLimit' => 32768,
         'chunkSize' => 8192,

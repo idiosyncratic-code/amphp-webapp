@@ -13,6 +13,7 @@ use Idiosyncratic\AmpRoute\Router;
 use Twig\Environment;
 
 use function Amp\call;
+use function ucfirst;
 
 class HelloWorld implements RequestHandler
 {

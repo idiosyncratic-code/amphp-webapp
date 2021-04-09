@@ -36,6 +36,7 @@
     "php": ">=8.0",
     "ext-pcntl": "*",
     "amphp/amp": "^2.5",
+    "amphp/cluster": "^1.0",
     "amphp/http-server": "^2.1",
     "amphp/http-server-static-content": "dev-fix-server-observer-typehint",
     "amphp/log": "^1.1",
