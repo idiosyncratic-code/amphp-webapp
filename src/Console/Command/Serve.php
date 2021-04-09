@@ -9,13 +9,19 @@ use Amp\Http\Server\Options;
 use Amp\Http\Server\RequestHandler;
 use Amp\Http\Server\ServerObserver;
 use Amp\Loop;
-use Amp\Socket;
+use Amp\Promise;
+use Amp\Socket\Server as SocketServer;
+use Amp\Success;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Lock\LockFactory;
+
+use function array_map;
+use function get_class;
+use function sprintf;
 
 use const SIGINT;
 
@@ -29,17 +35,22 @@ final class Serve extends Command
 
     private LockFactory $locks;
 
+    /** @var array<Promise<SocketServer> | SocketServer> */
+    private array $sockets;
+
     /** @var array<ServerObserver> */
     private array $observers;
 
     /**
-     * @param array<ServerObserver> $observers
+     * @param array<Promise<SocketServer> | SocketServer> $sockets
+     * @param array<ServerObserver>                       $observers
      */
     public function __construct(
         Options $serverOptions,
         RequestHandler $requestHandler,
         LoggerInterface $log,
         LockFactory $locks,
+        array $sockets,
         array $observers = []
     ) {
         $this->serverOptions = $serverOptions;
@@ -49,6 +60,8 @@ final class Serve extends Command
         $this->log = $log;
 
         $this->locks = $locks;
+
+        $this->sockets = $sockets;
 
         $this->observers = $observers;
 
@@ -69,19 +82,20 @@ final class Serve extends Command
         Loop::run(function () {
             $lock = $this->locks->createLock('phpid-serve', null, true);
 
-            $context = new Socket\BindContext();
-
             if ($lock->acquire() === false) {
                 throw new RuntimeException('Could not start server, another instance is already running');
             }
 
-            $servers = [
-                Socket\Server::listen('0.0.0.0:80', $context),
-                Socket\Server::listen('[::]:80', $context),
-            ];
+            $sockets = array_map(static function ($socket) {
+                if ($socket instanceof SocketServer) {
+                    $socket = new Success($socket);
+                }
+
+                return $socket;
+            }, $this->sockets);
 
             $server = new HttpServer(
-                $servers,
+                yield $sockets,
                 $this->requestHandler,
                 $this->log,
                 $this->serverOptions

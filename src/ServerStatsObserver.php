@@ -11,6 +11,7 @@ use Amp\Promise;
 use Amp\Success;
 use Psr\Log\LoggerInterface;
 
+use function is_array;
 use function memory_get_peak_usage;
 use function memory_get_usage;
 use function round;

@@ -8,7 +8,7 @@ services:
     - '80:80'
     volumes:
     - '.:/app'
-    - './docker/php.ini-development://usr/local/etc/php/php.ini'
+    - './docker/php.ini-development:/usr/local/etc/php/php.ini'
     environment:
       PHP_OPCACHE_ENABLE: 1
       PHP_OPCACHE_ENABLE_CLI: 1

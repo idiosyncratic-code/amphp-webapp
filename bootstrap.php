@@ -6,6 +6,7 @@ use Amp\Http\Server\Options;
 use Amp\Http\Server\RequestHandler;
 use Amp\Http\Server\ServerObserver;
 use Amp\Http\Server\StaticContent\DocumentRoot;
+use Amp\Socket\Server as SocketServer;
 use DI\ContainerBuilder;
 use Idiosyncratic\AmpRoute\RouteGroup;
 use Psr\Log\LoggerInterface;
@@ -24,6 +25,7 @@ $builder->addDefinitions([
     LockFactory::class => require_once('services/console-lock-factory.php'),
     ServerObserver::class => require_once('services/observers.php'),
     TwigEnvironment::class => require_once('services/twig.php'),
+    SocketServer::class => require_once('services/socket-servers.php'),
 ]);
 
 return $builder->build();
